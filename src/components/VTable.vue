@@ -9,18 +9,29 @@
     :custom-filter="customFilter"
   >
     <template slot="items" slot-scope="props">
-      <td>
-        <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
-      </td>
-      <td>{{props.item.date}}</td>
-      <td>{{props.item.fullName}}</td>
-      <td>{{props.item.idDoc}}</td>
-      <td>{{props.item.contactPhone}}</td>
-      <td>{{props.item.phone}}</td>
-      <td>{{props.item.imei}}</td>
-      <td>{{props.item.description}}</td>
-      <td>{{props.item.technician}}</td>
-      <td>{{props.item.status}}</td>
+      <v-hover>
+        <tr slot-scope="{ hover }">
+          <td>
+            <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+          </td>
+          <td>{{props.item.date}}</td>
+          <td>{{props.item.fullName}}</td>
+          <td>{{props.item.idDoc}}</td>
+          <td>{{props.item.contactPhone}}</td>
+          <td>{{props.item.phone}}</td>
+          <td>{{props.item.imei}}</td>
+          <td>{{props.item.description}}</td>
+          <td>{{props.item.technician}}</td>
+          <td>{{props.item.status}}</td>
+          <td class="pa-0">
+            <div class="table__actions">
+              <v-btn icon v-show="hover" @click="$emit('item-to-edit', props.item)" class="ma-0">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </div>
+          </td>
+        </tr>
+      </v-hover>
     </template>
     <v-alert
       slot="no-results"
@@ -44,7 +55,8 @@ export default {
       { text: "IMEI", value: "imei", sortable: false },
       { text: "Descripción", value: "description", sortable: false },
       { text: "Técnico", value: "technician", sortable: false },
-      { text: "Estatus", value: "status", sortable: false }
+      { text: "Estatus", value: "status", sortable: false },
+      { text: "", value: "actions", sortable: false }
     ],
     clients: [
       {
@@ -90,7 +102,9 @@ export default {
   props: {
     search: String,
     filterByTechnician: String,
-    filterByStatus: String
+    filterByStatus: String,
+    newItem: Object,
+    updatedItem: Object
   },
   methods: {
     customFilter(items, search, filter, headers) {
@@ -102,7 +116,12 @@ export default {
         return items.filter(item => {
           return (
             item.fullName.toLowerCase().includes(word.toLowerCase()) ||
-            item.phone.toLowerCase().includes(word.toLowerCase())
+            item.idDoc.toString().includes(word) ||
+            item.contactPhone.toLowerCase().includes(word.toLowerCase()) ||
+            item.imei.toLowerCase().includes(word.toLowerCase()) ||
+            item.phone.toLowerCase().includes(word.toLowerCase()) ||
+            item.description.toLowerCase().includes(word.toLowerCase()) ||
+            item.status.toLowerCase().includes(word.toLowerCase())
           );
         }, word);
       });
@@ -127,6 +146,12 @@ export default {
     }
   },
   watch: {
+    newItem() {
+      this.clients.unshift(this.newItem);
+    },
+    updatedItem({ editedItem, pos }) {
+      Object.assign(this.clients[pos], editedItem);
+    },
     search(val) {
       this.filters = this.$MultiFilters.updateFilters(this.filters, {
         search: val
@@ -142,6 +167,21 @@ export default {
         status: val
       });
     }
+  },
+  mounted() {
+    this.$emit("data", this.clients);
   }
 };
 </script>
+
+<style>
+.table__data {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+.table__actions {
+  width: 36px;
+}
+</style>
