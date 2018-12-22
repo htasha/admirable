@@ -65,7 +65,7 @@
               <v-flex xs6>
                 <v-select v-model="editedItem.status" :items="statusItems" label="Estatus"></v-select>
               </v-flex>
-              <v-flex xs6 v-if="edit">
+              <v-flex xs6 v-if="editt">
                 <v-text-field label="Tiempo de garantía" suffix="Días"></v-text-field>
               </v-flex>
             </v-layout>
@@ -83,6 +83,8 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
+
 export default {
   data: () => ({
     editedItem: {
@@ -110,7 +112,7 @@ export default {
     valid: false,
     dialog: false,
     warranty: false,
-    edit: false,
+    editt: false,
     statusItems: [
       "Listo para entregar",
       "Esperando repuesto",
@@ -119,13 +121,19 @@ export default {
       "Garantía"
     ],
     rules: [v => !!v || "Campo requerido"],
-    indexOfItem: -1
+    indexOfItem: -1,
+    clients: null
   }),
-  props: {
-    clients: Array,
-    itemToEdit: Object
+  computed: {
+    ...mapGetters(["getDataTableItems", "getDataTableItemToEdit"])
   },
   methods: {
+    ...mapMutations(["ADD_NEW_DATABLE_ITEM"]),
+    edit() {
+      this.indexOfItem = this.clients.indexOf(this.getDataTableItemToEdit);
+      this.editedItem = Object.assign({}, this.getDataTableItemToEdit);
+      this.dialog = true;
+    },
     add() {
       if (this.$refs.form.validate()) {
         if (this.indexOfItem > -1) {
@@ -134,7 +142,7 @@ export default {
             pos: this.indexOfItem
           });
         } else {
-          this.$emit("item-added", this.editedItem);
+          this.ADD_NEW_DATABLE_ITEM(this.editedItem);
         }
         this.close();
       }
@@ -149,14 +157,12 @@ export default {
     }
   },
   watch: {
-    itemToEdit(item) {
-      this.indexOfItem = this.clients.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
     dialog(val) {
       val || this.close();
     }
+  },
+  mounted() {
+    this.clients = this.getDataTableItems;
   }
 };
 </script>

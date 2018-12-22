@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="clients"
+    :items="dataTableItems"
     select-all
     :search="filters"
     item-key="idDoc"
@@ -25,7 +25,7 @@
           <td>{{props.item.status}}</td>
           <td class="pa-0">
             <div class="table__actions">
-              <v-btn icon v-show="hover" @click="$emit('item-to-edit', props.item)" class="ma-0">
+              <v-btn icon v-show="hover" @click="edit(props.item)" class="ma-0">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </div>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
   data: () => ({
     selected: [],
@@ -58,41 +60,6 @@ export default {
       { text: "Estatus", value: "status", sortable: false },
       { text: "", value: "actions", sortable: false }
     ],
-    clients: [
-      {
-        date: "15/12/2018",
-        fullName: "Marcano Ahsath",
-        idDoc: 24897942,
-        contactPhone: "04241773316",
-        phone: "HUAWEI Mate 9 Lite",
-        imei: "008468123189132484",
-        description: "Cambio puerto carga",
-        technician: "Miguel",
-        status: "Garantía"
-      },
-      {
-        date: "24/12/2018",
-        fullName: "Fernando jaramillo",
-        idDoc: 59798855,
-        contactPhone: "04241998855",
-        phone: "Samsung s3 mini",
-        imei: "054567868654854",
-        description: "Pantalla completa",
-        technician: "Marcano",
-        status: "En reparación"
-      },
-      {
-        date: "24/12/2018",
-        fullName: "Fernando Correia",
-        idDoc: 59798138,
-        contactPhone: "04241998855",
-        phone: "Samsung s3 mini",
-        imei: "054567868654854",
-        description: "Pantalla completa",
-        technician: "Marcano",
-        status: "Esperando repuesto"
-      }
-    ],
     filters: {
       search: "",
       technician: "",
@@ -100,13 +67,23 @@ export default {
     }
   }),
   props: {
-    search: String,
     filterByTechnician: String,
     filterByStatus: String,
-    newItem: Object,
-    updatedItem: Object
+    updatedItem: Object,
+    registerRef: Object
+  },
+  computed: {
+    ...mapGetters({
+      dataTableItems: "getDataTableItems",
+      search: "getSearch"
+    })
   },
   methods: {
+    ...mapMutations(["SAVE_DATABLE_ITEM_TO_EDIT"]),
+    edit(item) {
+      this.SAVE_DATABLE_ITEM_TO_EDIT(item);
+      this.registerRef.edit();
+    },
     customFilter(items, search, filter, headers) {
       const cf = new this.$MultiFilters(items, search, filter, headers);
 
@@ -146,9 +123,6 @@ export default {
     }
   },
   watch: {
-    newItem() {
-      this.clients.unshift(this.newItem);
-    },
     updatedItem({ editedItem, pos }) {
       Object.assign(this.clients[pos], editedItem);
     },
@@ -167,9 +141,6 @@ export default {
         status: val
       });
     }
-  },
-  mounted() {
-    this.$emit("data", this.clients);
   }
 };
 </script>

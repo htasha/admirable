@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar-search @search="search = $event"></v-toolbar-search>
+    <v-toolbar-search></v-toolbar-search>
     <v-content>
       <v-container fluid>
         <v-layout>
@@ -8,13 +8,8 @@
             <v-card>
               <v-layout class="pa-3" wrap>
                 <v-flex xs12>
-                  <!-- Add new -->
-                  <v-dialog-form
-                    @item-added="itemAdded = $event"
-                    @item-updated="updatedItem = $event"
-                    :clients="clients"
-                    :item-to-edit="itemToEdit"
-                  ></v-dialog-form>
+                  <!-- Add new  -->
+                  <v-dialog-form ref="dialogForm" @item-updated="updatedItem = $event"></v-dialog-form>
                 </v-flex>
                 <v-flex xs6 align-end class="display--flex">
                   <!-- Data table menu -->
@@ -28,13 +23,10 @@
               <v-divider></v-divider>
               <!-- Table -->
               <v-table
-                :search="search"
                 :filter-by-technician="technician"
                 :filter-by-status="status"
-                :new-item="itemAdded"
                 :updated-item="updatedItem"
-                @data="clients = $event"
-                @item-to-edit="itemToEdit = $event"
+                :register-ref="dialogForm"
               ></v-table>
             </v-card>
           </v-flex>
@@ -53,13 +45,13 @@ import VTable from "@/components/VTable.vue";
 
 export default {
   data: () => ({
-    search: "",
     technician: null,
     status: null,
     itemAdded: null,
     itemToEdit: null,
     updatedItem: null,
-    clients: null
+    clients: null,
+    dialogForm: null
   }),
   components: {
     VToolbarSearch,
@@ -68,10 +60,8 @@ export default {
     VFilter,
     VTable
   },
-  methods: {
-    damn(val) {
-      console.log(val);
-    }
+  mounted() {
+    this.dialogForm = this.$refs.dialogForm;
   }
 };
 </script>

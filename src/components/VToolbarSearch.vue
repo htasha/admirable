@@ -9,18 +9,19 @@
       append-icon="mdi-magnify"
       placeholder="Busqueda"
       color="blue"
-      v-model="search"
-      @input="$emit('search', search)"
+      @input="UPDATE_SEARCH($event)"
     ></v-text-field>
     <v-spacer></v-spacer>
   </v-toolbar>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
-  data: () => ({
-    search: ""
-  })
+  methods: {
+    ...mapMutations(["UPDATE_SEARCH"])
+  }
 };
 </script>
 
