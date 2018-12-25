@@ -6,7 +6,7 @@
     <v-card>
       <v-card-title>
         <h5 class="headline">{{indexOfItem !== -1 ? "Editar" : "Nuevo ingreso"}}</h5>
-        <v-icon class="ml-2">mdi-{{indexOfItem !== -1 ? 'pencil' : 'close'}}</v-icon>
+        <v-icon class="ml-2">mdi-{{indexOfItem !== -1 ? 'pencil' : 'plus'}}</v-icon>
         <v-spacer></v-spacer>
         <v-alert
           color="warning"
@@ -128,32 +128,34 @@ export default {
     ...mapGetters(["getDataTableItems", "getDataTableItemToEdit"])
   },
   methods: {
-    ...mapMutations(["ADD_NEW_DATABLE_ITEM"]),
+    ...mapMutations(["ADD_NEW_DATABLE_ITEM", "UPDATE_DATABLE_ITEM"]),
     edit() {
-      this.indexOfItem = this.clients.indexOf(this.getDataTableItemToEdit);
-      this.editedItem = Object.assign({}, this.getDataTableItemToEdit);
+      let itemToEdit = this.getDataTableItemToEdit;
+      this.indexOfItem = this.clients.indexOf(itemToEdit);
+      this.editedItem = Object.assign({}, itemToEdit);
       this.dialog = true;
     },
     add() {
       if (this.$refs.form.validate()) {
         if (this.indexOfItem > -1) {
-          this.$emit("item-updated", {
-            editedItem: this.editedItem,
+          this.UPDATE_DATABLE_ITEM({
+            item: this.editedItem,
             pos: this.indexOfItem
           });
+          this.close();
         } else {
           this.ADD_NEW_DATABLE_ITEM(this.editedItem);
+          this.close();
         }
-        this.close();
       }
     },
     close() {
       this.dialog = false;
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.indexOfItem = -1;
         this.editedItem = Object.assign({}, this.defaultItem);
         this.$refs.form.reset();
-      }, 300);
+      });
     }
   },
   watch: {

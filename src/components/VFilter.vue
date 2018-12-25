@@ -4,53 +4,64 @@
       <v-subheader class="px-0">Filtrar por:</v-subheader>
     </v-flex>
     <v-flex xs3 offset-xs5>
-      <v-select
-        v-model="technician"
+      <!-- Add [Esc] event to cancel search -->
+      <v-autocomplete
         :items="technicians"
-        @change="$emit('technician', technician)"
+        :search-input.sync="filters.technician"
+        item-text="name"
         label="Técnico"
+        cache-items
+        clearable
         hide-details
-      ></v-select>
+      ></v-autocomplete>
     </v-flex>
     <v-spacer></v-spacer>
     <v-flex xs3>
-      <v-select
-        v-model="status"
-        :items="phoneStatus"
-        @change="$emit('status', status)"
+      <!-- Add [Esc] event to cancel search -->
+      <v-autocomplete
+        :items="status"
+        :search-input.sync="filters.status"
+        item-text="status"
         label="Estatus"
+        cache-items
+        clearable
         hide-details
-      ></v-select>
+      ></v-autocomplete>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   data: () => ({
-    phoneStatus: [
-      "Listo para entregar",
-      "Esperando repuesto",
-      "En reparación",
-      "Retirado",
-      "Garantía"
+    status: [
+      { status: "Listo para entregar", filterType: "status" },
+      { status: "Esperando repuesto", filterType: "status" },
+      { status: "En reparación", filterType: "status" },
+      { status: "Retirado", filterType: "status" },
+      { status: "Garantía", filterType: "status" }
     ],
-    technicians: ["Miguel", "Johan", "Marcano"],
-    technician: null,
-    status: null
+    technicians: [
+      { name: "Miguel", filterType: "technician" },
+      { name: "Johan", filterType: "technician" },
+      { name: "Marcano", filterType: "technician" }
+    ],
+    filters: {
+      technician: "",
+      status: ""
+    }
   }),
   methods: {
-    change(val) {
-      // this.$emit("filter", val);
-    },
-    clear(type) {
-      console.log(type);
-      type === "technician" ? (this.technician = null) : (this.status = null);
-    }
+    ...mapMutations(["SET_FILTER", "CLEAR_FILTER"])
   },
   watch: {
-    technician(val) {
-      // console.log(val);
+    "filters.technician": function(technician) {
+      this.SET_FILTER({ technician });
+    },
+    "filters.status": function(status) {
+      this.SET_FILTER({ status });
     }
   }
 };

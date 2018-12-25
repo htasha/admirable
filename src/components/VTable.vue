@@ -1,12 +1,12 @@
 <template>
   <v-data-table
+    v-model="selected"
     :headers="headers"
     :items="dataTableItems"
-    select-all
-    :search="filters"
-    item-key="idDoc"
-    v-model="selected"
     :custom-filter="customFilter"
+    :search="filters"
+    select-all
+    item-key="idDoc"
   >
     <template slot="items" slot-scope="props">
       <v-hover>
@@ -38,7 +38,7 @@
       :value="true"
       color="error"
       icon="mdi-alert"
-    >Tu busqueda para "{{ search }}" no fue encontrada.</v-alert>
+    >Tu busqueda para "{{ search || filters.technician || filters.status }}" no fue encontrada.</v-alert>
   </v-data-table>
 </template>
 
@@ -67,19 +67,21 @@ export default {
     }
   }),
   props: {
-    filterByTechnician: String,
-    filterByStatus: String,
-    updatedItem: Object,
     registerRef: Object
   },
   computed: {
     ...mapGetters({
       dataTableItems: "getDataTableItems",
-      search: "getSearch"
+      search: "getSearch",
+      technician: "getTechnician",
+      status: "getStatus"
     })
   },
   methods: {
-    ...mapMutations(["SAVE_DATABLE_ITEM_TO_EDIT"]),
+    ...mapMutations([
+      "SAVE_DATABLE_ITEM_TO_EDIT",
+      "SAVE_SELECTED_DATABLE_ITEM"
+    ]),
     edit(item) {
       this.SAVE_DATABLE_ITEM_TO_EDIT(item);
       this.registerRef.edit();
@@ -103,40 +105,40 @@ export default {
         }, word);
       });
 
-      cf.registerFilter("technician", function(technician, items) {
-        if (technician.trim() === "") return items;
+      cf.registerFilter("technician", function(word, items) {
+        if (word.trim() === "") return items;
 
         return items.filter(item => {
-          return item.technician.toLowerCase() === technician.toLowerCase();
-        }, technician);
+          return item.technician.toLowerCase().includes(word.toLowerCase());
+        }, word);
       });
 
-      cf.registerFilter("status", function(status, items) {
-        if (status.trim() === "") return items;
+      cf.registerFilter("status", function(word, items) {
+        if (word.trim() === "") return items;
 
         return items.filter(item => {
-          return item.status.toLowerCase() === status.toLowerCase();
-        }, status);
+          return item.status.toLowerCase().includes(word.toLowerCase());
+        }, word);
       });
 
       return cf.runFilters();
     }
   },
   watch: {
-    updatedItem({ editedItem, pos }) {
-      Object.assign(this.clients[pos], editedItem);
+    selected(items) {
+      this.SAVE_SELECTED_DATABLE_ITEM(items);
     },
     search(val) {
       this.filters = this.$MultiFilters.updateFilters(this.filters, {
         search: val
       });
     },
-    filterByTechnician(val) {
+    technician(val) {
       this.filters = this.$MultiFilters.updateFilters(this.filters, {
         technician: val
       });
     },
-    filterByStatus(val) {
+    status(val) {
       this.filters = this.$MultiFilters.updateFilters(this.filters, {
         status: val
       });

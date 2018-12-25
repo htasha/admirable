@@ -3,26 +3,20 @@
     <v-btn class="ma-0" icon slot="activator">
       <v-icon>mdi-dots-vertical</v-icon>
     </v-btn>
-    <v-list>
+    <v-list two-line>
       <v-subheader>Establecer estatus del equipo</v-subheader>
-      <v-list-tile @click>
-        <v-list-tile-action>
-          <v-checkbox v-model="readyForDeliver"></v-checkbox>
-        </v-list-tile-action>
-        <v-list-tile-content @click="readyForDeliver = !readyForDeliver">Listo para entrega</v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile @click>
-        <v-list-tile-action>
-          <v-checkbox v-model="waitingForSpare"></v-checkbox>
-        </v-list-tile-action>
-        <v-list-tile-content @click>Esperando repuesto</v-list-tile-content>
-      </v-list-tile>
-      <v-divider></v-divider>
-
-      <v-subheader>Asignar tecnico</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
-          <v-select :items="technicians" label="Tecnico" hide-details></v-select>
+          <v-select v-model="menu.status" :items="status" label="Estatus" hide-details></v-select>
+        </v-list-tile-content>
+      </v-list-tile>
+
+      <v-divider></v-divider>
+
+      <v-subheader>Asignar técnico</v-subheader>
+      <v-list-tile>
+        <v-list-tile-content>
+          <v-select v-model="menu.technician" :items="technicians" label="Técnico" hide-details></v-select>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -30,11 +24,33 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   data: () => ({
-    readyForDeliver: false,
-    waitingForSpare: false,
-    technicians: ["Miguel", "Johan", "Marcano"]
-  })
+    menu: {
+      technician: null,
+      status: null
+    },
+    technicians: ["Miguel", "Johan", "Marcano"],
+    status: [
+      "Listo para entregar",
+      "Esperando repuesto",
+      "En reparación",
+      "Retirado",
+      "Garantía"
+    ]
+  }),
+  methods: {
+    ...mapMutations(["UPDATE_MULTIPLE_DATABLE_ITEM"])
+  },
+  watch: {
+    "menu.technician": function(technician) {
+      this.UPDATE_MULTIPLE_DATABLE_ITEM({ technician });
+    },
+    "menu.status": function(status) {
+      this.UPDATE_MULTIPLE_DATABLE_ITEM({ status });
+    }
+  }
 };
 </script>
