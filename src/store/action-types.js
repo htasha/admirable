@@ -1,0 +1,1 @@
+export const CREATE_NEW_DOC = 'CREATE_NEW_DOC'
