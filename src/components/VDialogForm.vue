@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapMutations, mapGetters, mapActions } from "vuex";
 
 export default {
   data: () => ({
@@ -129,13 +129,14 @@ export default {
   },
   methods: {
     ...mapMutations("clients", ["ADD_NEW_DATABLE_ITEM", "UPDATE_DATABLE_ITEM"]),
+    ...mapActions("clients", ["CREATE_NEW_DOC"]),
     edit() {
       let itemToEdit = this.getDataTableItemToEdit;
       this.indexOfItem = this.clients.indexOf(itemToEdit);
       this.editedItem = Object.assign({}, itemToEdit);
       this.dialog = true;
     },
-    add() {
+    async add() {
       if (this.$refs.form.validate()) {
         if (this.indexOfItem > -1) {
           this.UPDATE_DATABLE_ITEM({
@@ -144,7 +145,9 @@ export default {
           });
           this.close();
         } else {
-          this.ADD_NEW_DATABLE_ITEM(this.editedItem);
+          let date = this.$dayjs().format();
+          let doc = Object.assign(this.editedItem, { _id: date, date });
+          const response = await this.CREATE_NEW_DOC(doc);
           this.close();
         }
       }
