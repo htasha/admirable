@@ -20,7 +20,7 @@ import { mapMutations } from "vuex";
 
 export default {
   methods: {
-    ...mapMutations(["UPDATE_SEARCH"])
+    ...mapMutations("clients", ["UPDATE_SEARCH"])
   }
 };
 </script>

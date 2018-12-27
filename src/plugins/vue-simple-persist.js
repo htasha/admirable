@@ -1,4 +1,4 @@
-export let clients = [{
+let clients = [{
         date: "15/12/2018",
         fullName: "Marcano Ahsath",
         idDoc: 24897942,
@@ -32,3 +32,5 @@ export let clients = [{
         status: "Esperando repuesto"
     }
 ]
+
+export default store => store.commit('clients/SET_STATE', clients)

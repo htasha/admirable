@@ -6,7 +6,7 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/css/global.css'
 import MultiFilters from '@/plugins/multi-filters'
-import store from './store/store'
+import store from './store'
 
 Vue.use(MultiFilters)
 Vue.config.productionTip = false
@@ -14,5 +14,9 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted() {
+    // Prevent blank screen in Electron builds
+    this.$router.push('/')
+  }
 }).$mount('#app')

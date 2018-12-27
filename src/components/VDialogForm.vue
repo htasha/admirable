@@ -125,10 +125,10 @@ export default {
     clients: null
   }),
   computed: {
-    ...mapGetters(["getDataTableItems", "getDataTableItemToEdit"])
+    ...mapGetters("clients", ["getDataTableItems", "getDataTableItemToEdit"])
   },
   methods: {
-    ...mapMutations(["ADD_NEW_DATABLE_ITEM", "UPDATE_DATABLE_ITEM"]),
+    ...mapMutations("clients", ["ADD_NEW_DATABLE_ITEM", "UPDATE_DATABLE_ITEM"]),
     edit() {
       let itemToEdit = this.getDataTableItemToEdit;
       this.indexOfItem = this.clients.indexOf(itemToEdit);

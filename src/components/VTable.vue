@@ -70,7 +70,7 @@ export default {
     registerRef: Object
   },
   computed: {
-    ...mapGetters({
+    ...mapGetters("clients", {
       dataTableItems: "getDataTableItems",
       search: "getSearch",
       technician: "getTechnician",
@@ -78,7 +78,7 @@ export default {
     })
   },
   methods: {
-    ...mapMutations([
+    ...mapMutations("clients", [
       "SAVE_DATABLE_ITEM_TO_EDIT",
       "SAVE_SELECTED_DATABLE_ITEM"
     ]),

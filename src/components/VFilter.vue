@@ -54,7 +54,7 @@ export default {
     }
   }),
   methods: {
-    ...mapMutations(["SET_FILTER", "CLEAR_FILTER"])
+    ...mapMutations("clients", ["SET_FILTER", "CLEAR_FILTER"])
   },
   watch: {
     "filters.technician": function(technician) {

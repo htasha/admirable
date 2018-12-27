@@ -3,7 +3,7 @@
     <v-btn class="ma-0" icon slot="activator">
       <v-icon>mdi-dots-vertical</v-icon>
     </v-btn>
-    <v-list two-line>
+    <v-list two-line v-if="showOptions">
       <v-subheader>Establecer estatus del equipo</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
@@ -18,6 +18,11 @@
         <v-list-tile-content>
           <v-select v-model="menu.technician" :items="technicians" label="Técnico" hide-details></v-select>
         </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
+    <v-list v-else>
+      <v-list-tile>
+        <v-list-tile-content class="body-1 font-italic">Selecciona registros para ver más opciones</v-list-tile-content>
       </v-list-tile>
     </v-list>
   </v-menu>
@@ -42,7 +47,12 @@ export default {
     ]
   }),
   methods: {
-    ...mapMutations(["UPDATE_MULTIPLE_DATABLE_ITEM"])
+    ...mapMutations("clients", ["UPDATE_MULTIPLE_DATABLE_ITEM"])
+  },
+  computed: {
+    showOptions() {
+      return this.$store.state.clients.dataTable.selectedDatableItem.length > 0;
+    }
   },
   watch: {
     "menu.technician": function(technician) {
