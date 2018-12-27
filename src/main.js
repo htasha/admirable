@@ -7,9 +7,11 @@ import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/css/global.css'
 import MultiFilters from '@/plugins/multi-filters'
 import store from './store'
+import dayjs from 'dayjs'
 
 Vue.use(MultiFilters)
 Vue.config.productionTip = false
+Vue.prototype.$dayjs = dayjs
 
 new Vue({
   router,
