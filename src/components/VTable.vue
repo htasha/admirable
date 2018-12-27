@@ -14,7 +14,7 @@
           <td>
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
-          <td>{{props.item.date}}</td>
+          <td>{{props.item.date | formatDate}}</td>
           <td>{{props.item.fullName}}</td>
           <td>{{props.item.idDoc}}</td>
           <td>{{props.item.contactPhone}}</td>
@@ -44,14 +44,17 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-
+import dayjs from "dayjs";
+// 2018-12-26T22:48:48-04:00
+// "hh:mm a DD/MM/YYYY"
+// console.log(dayjs().format());
 export default {
   data: () => ({
     selected: [],
     headers: [
       { text: "Fecha", value: "date", sortable: false },
       { text: "Nombre completo", value: "fullName", sortable: false },
-      { text: "Documento de identidad", value: "idDoc", sortable: false },
+      { text: "Doc. Identidad", value: "idDoc", sortable: false },
       { text: "Telefono", value: "contactPhone", sortable: false },
       { text: "Equipo", value: "phone", sortable: false },
       { text: "IMEI", value: "imei", sortable: false },
@@ -123,6 +126,9 @@ export default {
 
       return cf.runFilters();
     }
+  },
+  filters: {
+    formatDate: value => dayjs(value).format("DD/MM/YYYY")
   },
   watch: {
     selected(items) {
