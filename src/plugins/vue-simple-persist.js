@@ -1,5 +1,5 @@
 let clients = [{
-        date: "15/12/2018",
+        date: "2018-12-27T03:22:56.235Z",
         fullName: "Marcano Ahsath",
         idDoc: 24897942,
         contactPhone: "04241773316",
@@ -10,7 +10,7 @@ let clients = [{
         status: "Garantía"
     },
     {
-        date: "24/12/2018",
+        date: "2018-11-22T03:24:41.332Z",
         fullName: "Fernando jaramillo",
         idDoc: 59798855,
         contactPhone: "04241998855",
@@ -21,7 +21,7 @@ let clients = [{
         status: "En reparación"
     },
     {
-        date: "24/12/2018",
+        date: "2018-10-27T03:25:37.444Z",
         fullName: "Fernando Correia",
         idDoc: 59798138,
         contactPhone: "04241998855",
