@@ -3,18 +3,16 @@ import {
 } from '../db'
 import fetchDoc from './fetch-doc'
 
-export default async (doc) => {
+export default async doc => {
     try {
-        let response = await Clients.put(doc)
-        if (response.ok) {
-            try {
-                let item = await fetchDoc(response.id)
-                return item
-            } catch (error) {
-                console.log(error)
-            }
-        }
+        let response, item
+        response = await Clients.put(doc)
+        if (response.ok) return item = await fetchDoc(response.id)
     } catch (error) {
         console.log(error)
+        if (error.status === 412) throw {
+            error: true,
+            message: '_id es requerido'
+        }
     }
 }

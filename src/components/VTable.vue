@@ -39,15 +39,14 @@
       color="error"
       icon="mdi-alert"
     >Tu busqueda para "{{ search || filters.technician || filters.status }}" no fue encontrada.</v-alert>
+    <div slot="no-data" class="text-xs-center">No hay datos disponibles</div>
   </v-data-table>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import dayjs from "dayjs";
-// 2018-12-26T22:48:48-04:00
-// "hh:mm a DD/MM/YYYY"
-// console.log(dayjs().format());
+
 export default {
   data: () => ({
     selected: [],
@@ -128,7 +127,7 @@ export default {
     }
   },
   filters: {
-    formatDate: value => dayjs(value).format("DD/MM/YYYY")
+    formatDate: date => dayjs(date).format("DD/MM/YYYY")
   },
   watch: {
     selected(items) {

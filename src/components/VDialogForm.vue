@@ -75,7 +75,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat color="blue">descartar</v-btn>
+        <v-btn flat color="blue" @click="close">descartar</v-btn>
         <v-btn flat color="blue" @click="add">{{indexOfItem !== -1 ? 'actualizar' : 'añadir'}}</v-btn>
       </v-card-actions>
     </v-card>
@@ -88,7 +88,7 @@ import { mapMutations, mapGetters, mapActions } from "vuex";
 export default {
   data: () => ({
     editedItem: {
-      date: "some date",
+      date: null,
       fullName: null,
       idDoc: null,
       contactPhone: null,
@@ -99,7 +99,7 @@ export default {
       status: "En reparación"
     },
     defaultItem: {
-      date: "some date",
+      date: null,
       fullName: null,
       idDoc: null,
       contactPhone: null,
@@ -122,13 +122,15 @@ export default {
     ],
     rules: [v => !!v || "Campo requerido"],
     indexOfItem: -1,
-    clients: null
+    clients: null,
+    date: null,
+    doc: null
   }),
   computed: {
     ...mapGetters("clients", ["getDataTableItems", "getDataTableItemToEdit"])
   },
   methods: {
-    ...mapMutations("clients", ["ADD_NEW_DATABLE_ITEM", "UPDATE_DATABLE_ITEM"]),
+    ...mapMutations("clients", ["UPDATE_DATABLE_ITEM"]),
     ...mapActions("clients", ["CREATE_NEW_DOC"]),
     edit() {
       let itemToEdit = this.getDataTableItemToEdit;
@@ -136,21 +138,35 @@ export default {
       this.editedItem = Object.assign({}, itemToEdit);
       this.dialog = true;
     },
-    async add() {
-      if (this.$refs.form.validate()) {
-        if (this.indexOfItem > -1) {
-          this.UPDATE_DATABLE_ITEM({
-            item: this.editedItem,
-            pos: this.indexOfItem
-          });
-          this.close();
-        } else {
-          let date = this.$dayjs().format();
-          let doc = Object.assign(this.editedItem, { _id: date, date });
-          const response = await this.CREATE_NEW_DOC(doc);
-          this.close();
-        }
+    add() {
+      this.validateForm()
+        ? this.indexOfItem > -1
+          ? this.updateDatableItem()
+          : this.createNewDatableItem()
+        : false;
+    },
+    validateForm() {
+      return this.$refs.form.validate() || false;
+    },
+    updateDatableItem() {
+      this.UPDATE_DATABLE_ITEM({
+        item: this.editedItem,
+        pos: this.indexOfItem
+      });
+      this.close();
+    },
+    async createNewDatableItem() {
+      this.date = this.$dayjs().format();
+      this.doc = Object.assign(this.editedItem, {
+        _id: this.date,
+        date: this.date
+      });
+      try {
+        const response = await this.CREATE_NEW_DOC(this.doc);
+      } catch (error) {
+        console.log(error);
       }
+      this.close();
     },
     close() {
       this.dialog = false;
@@ -164,9 +180,12 @@ export default {
   watch: {
     dialog(val) {
       val || this.close();
+    },
+    getDataTableItems(items) {
+      // this.clients = items;
     }
   },
-  mounted() {
+  created() {
     this.clients = this.getDataTableItems;
   }
 };
