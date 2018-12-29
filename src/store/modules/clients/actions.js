@@ -18,9 +18,8 @@ export default {
         }
     },
     async [CREATE_NEW_DOC](context, doc) {
-        let item
         try {
-            item = await createNewDoc(doc)
+            let item = await createNewDoc(doc)
             if (item) {
                 context.commit(ADD_NEW_DATABLE_ITEM, item)
                 return {
