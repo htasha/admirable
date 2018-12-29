@@ -39,7 +39,7 @@
       color="error"
       icon="mdi-alert"
     >Tu busqueda para "{{ search || filters.technician || filters.status }}" no fue encontrada.</v-alert>
-    <div slot="no-data" class="text-xs-center">No hay datos disponibles</div>
+    <div slot="no-data" class="text-xs-center">Aun no has guardado ningun dato!</div>
   </v-data-table>
 </template>
 
