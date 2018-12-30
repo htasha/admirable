@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data: () => ({
@@ -47,7 +47,7 @@ export default {
     ]
   }),
   methods: {
-    ...mapMutations("clients", ["UPDATE_MULTIPLE_DATABLE_ITEM"])
+    ...mapActions("clients", ["UPDATE_DOCUMENT"])
   },
   computed: {
     showOptions() {
@@ -55,11 +55,21 @@ export default {
     }
   },
   watch: {
-    "menu.technician": function(technician) {
-      this.UPDATE_MULTIPLE_DATABLE_ITEM({ technician });
+    "menu.technician": async function(technician) {
+      try {
+        let response = await this.UPDATE_DOCUMENT({ technician });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     },
-    "menu.status": function(status) {
-      this.UPDATE_MULTIPLE_DATABLE_ITEM({ status });
+    "menu.status": async function(status) {
+      try {
+        let response = await this.UPDATE_DOCUMENT({ status });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

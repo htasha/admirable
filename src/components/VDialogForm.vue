@@ -83,11 +83,12 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data: () => ({
     editedItem: {
+      _id: null,
       date: null,
       fullName: null,
       idDoc: null,
@@ -99,6 +100,7 @@ export default {
       status: "En reparación"
     },
     defaultItem: {
+      _id: null,
       date: null,
       fullName: null,
       idDoc: null,
@@ -124,18 +126,18 @@ export default {
     indexOfItem: -1,
     clients: null,
     date: null,
-    doc: null
+    doc: null,
+    itemToEdit: null
   }),
   computed: {
     ...mapGetters("clients", ["getDataTableItems", "getDataTableItemToEdit"])
   },
   methods: {
-    ...mapMutations("clients", ["UPDATE_DATABLE_ITEM"]),
-    ...mapActions("clients", ["CREATE_NEW_DOC"]),
+    ...mapActions("clients", ["CREATE_NEW_DOC", "UPDATE_DOCUMENT"]),
     edit() {
-      let itemToEdit = this.getDataTableItemToEdit;
-      this.indexOfItem = this.clients.indexOf(itemToEdit);
-      this.editedItem = Object.assign({}, itemToEdit);
+      this.itemToEdit = this.getDataTableItemToEdit;
+      this.indexOfItem = this.clients.indexOf(this.itemToEdit);
+      this.editedItem = Object.assign({}, this.itemToEdit);
       this.dialog = true;
     },
     add() {
@@ -148,12 +150,15 @@ export default {
     validateForm() {
       return this.$refs.form.validate() || false;
     },
-    updateDatableItem() {
-      this.UPDATE_DATABLE_ITEM({
-        item: this.editedItem,
-        pos: this.indexOfItem
-      });
-      this.close();
+    async updateDatableItem() {
+      try {
+        let doc = { update: this.editedItem, oldDoc: this.itemToEdit };
+        let response = await this.UPDATE_DOCUMENT(doc);
+        console.log(response);
+        this.close();
+      } catch (error) {
+        console.log(error);
+      }
     },
     async createNewDatableItem() {
       this.date = this.$dayjs().format();
@@ -180,9 +185,6 @@ export default {
   watch: {
     dialog(val) {
       val || this.close();
-    },
-    getDataTableItems(items) {
-      // this.clients = items;
     }
   },
   created() {

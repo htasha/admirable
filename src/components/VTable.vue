@@ -6,7 +6,7 @@
     :custom-filter="customFilter"
     :search="filters"
     select-all
-    item-key="idDoc"
+    item-key="_id"
   >
     <template slot="items" slot-scope="props">
       <v-hover>
