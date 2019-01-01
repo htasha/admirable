@@ -1,10 +1,10 @@
 <template>
-  <v-toolbar dark color="blue" app>
-    <v-toolbar-title>Equipos</v-toolbar-title>
+  <v-toolbar app>
+    <v-toolbar-title>Admirable</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-text-field
       flat
-      solo-inverted
+      solo
       hide-details
       append-icon="mdi-magnify"
       placeholder="Busqueda"

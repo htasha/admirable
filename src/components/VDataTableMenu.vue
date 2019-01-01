@@ -7,7 +7,7 @@
       <v-subheader>Establecer estatus del equipo</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
-          <v-select v-model="menu.status" :items="status" label="Estatus" hide-details></v-select>
+          <v-select v-model="menu.status" :items="statusItems" label="Estatus" hide-details box></v-select>
         </v-list-tile-content>
       </v-list-tile>
 
@@ -16,7 +16,7 @@
       <v-subheader>Asignar técnico</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
-          <v-select v-model="menu.technician" :items="technicians" label="Técnico" hide-details></v-select>
+          <v-select v-model="menu.technician" :items="technicians" label="Técnico" hide-details box></v-select>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -38,7 +38,7 @@ export default {
       status: null
     },
     technicians: ["Miguel", "Johan", "Marcano"],
-    status: [
+    statusItems: [
       "Listo para entregar",
       "Esperando repuesto",
       "En reparación",

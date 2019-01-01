@@ -1,12 +1,12 @@
 <template>
-  <v-dialog max-width="500" v-model="dialog" @keydown.enter="add">
-    <v-btn class="ma-0" color="primary" slot="activator">
+  <v-dialog max-width="500" v-model="dialog" persistent>
+    <v-btn class="ma-0" slot="activator">
       <v-icon left>mdi-plus</v-icon>añadir nuevo
     </v-btn>
     <v-card>
       <v-card-title>
-        <h5 class="headline">{{indexOfItem !== -1 ? "Editar" : "Nuevo ingreso"}}</h5>
-        <v-icon class="ml-2">mdi-{{indexOfItem !== -1 ? 'pencil' : 'plus'}}</v-icon>
+        <h5 class="headline">{{ indexOfItem !== -1 ? "Editar" : "Nuevo ingreso" }}</h5>
+        <v-icon class="ml-2">mdi-{{ indexOfItem !== -1 ? 'pencil' : 'plus' }}</v-icon>
         <v-spacer></v-spacer>
         <v-alert
           color="warning"
@@ -15,40 +15,43 @@
           style="border-radius: 2px;"
         >en reparacion</v-alert>
       </v-card-title>
-      <v-card-text v-if="warranty">
-        <p class="caption mb-0">Garantía expiró el 12/12/2018</p>
-      </v-card-text>
       <v-card-text>
-        <v-form v-model="valid" ref="form">
+        <v-form ref="form" v-model="valid">
           <v-container grid-list-md fluid class="pa-0">
             <v-layout wrap>
               <v-flex xs12>
                 <v-subheader class="pa-0 subheader_height--auto">Datos del cliente</v-subheader>
               </v-flex>
               <v-flex xs12>
-                <v-text-field v-model="editedItem.fullName" :rules="rules" label="Nombre completo"></v-text-field>
+                <v-text-field
+                  v-model="editedItem.fullName"
+                  :rules="rules"
+                  label="Nombre completo"
+                  box
+                ></v-text-field>
               </v-flex>
               <v-flex xs6>
                 <v-text-field
                   v-model="editedItem.idDoc"
                   :rules="rules"
                   label="Documento de identidad"
+                  box
                 ></v-text-field>
               </v-flex>
               <v-flex xs6>
-                <v-text-field v-model="editedItem.contactPhone" :rules="rules" label="Telefono"></v-text-field>
+                <v-text-field v-model="editedItem.contactPhone" :rules="rules" label="Telefono" box></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-subheader class="pa-0 subheader_height--auto">Datos del equipo</v-subheader>
+                <v-subheader class="pa-0 subheader_height--auto" box>Datos del equipo</v-subheader>
               </v-flex>
               <v-flex xs6>
-                <v-text-field v-model="editedItem.phone" :rules="rules" label="Equipo"></v-text-field>
+                <v-text-field v-model="editedItem.phone" :rules="rules" label="Equipo" box></v-text-field>
               </v-flex>
               <v-flex xs6>
-                <v-text-field v-model="editedItem.imei" :rules="rules" label="IMEI"></v-text-field>
+                <v-text-field v-model="editedItem.imei" :rules="rules" label="IMEI" box></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-textarea v-model="editedItem.description" :rules="rules" rows="1">
+                <v-textarea v-model="editedItem.description" :rules="rules" rows="1" box>
                   <div slot="label">
                     Reparación
                     <small>(descripción)</small>
@@ -56,17 +59,10 @@
                 </v-textarea>
               </v-flex>
               <v-flex xs12>
-                <v-subheader class="pa-0 subheader_height--auto">
-                  {{indexOfItem !== -1
-                  ? "Estatus y garantía del equipo"
-                  : "Estatus del equipo"}}
-                </v-subheader>
+                <v-subheader class="pa-0 subheader_height--auto">Estatus del equipo</v-subheader>
               </v-flex>
               <v-flex xs6>
-                <v-select v-model="editedItem.status" :items="statusItems" label="Estatus"></v-select>
-              </v-flex>
-              <v-flex xs6 v-if="editt">
-                <v-text-field label="Tiempo de garantía" suffix="Días"></v-text-field>
+                <v-select v-model="editedItem.status" :items="statusItems" label="Estatus" box></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -76,7 +72,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn flat color="blue" @click="close">descartar</v-btn>
-        <v-btn flat color="blue" @click="add">{{indexOfItem !== -1 ? 'actualizar' : 'añadir'}}</v-btn>
+        <v-btn flat color="blue" @click="add">{{ indexOfItem !== -1 ? 'actualizar' : 'añadir' }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -87,6 +83,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   data: () => ({
+    valid: true,
     editedItem: {
       _id: null,
       date: null,
@@ -111,10 +108,7 @@ export default {
       technician: "-",
       status: "En reparación"
     },
-    valid: false,
     dialog: false,
-    warranty: false,
-    editt: false,
     statusItems: [
       "Listo para entregar",
       "Esperando repuesto",
@@ -125,7 +119,6 @@ export default {
     rules: [v => !!v || "Campo requerido"],
     indexOfItem: -1,
     clients: null,
-    date: null,
     doc: null,
     itemToEdit: null
   }),
@@ -148,26 +141,27 @@ export default {
         : false;
     },
     validateForm() {
-      return this.$refs.form.validate() || false;
+      return this.$refs.form.validate();
     },
     async updateDatableItem() {
       try {
         let doc = { update: this.editedItem, oldDoc: this.itemToEdit };
         let response = await this.UPDATE_DOCUMENT(doc);
         console.log(response);
-        this.close();
+        if (response.updated) this.close();
       } catch (error) {
         console.log(error);
       }
     },
     async createNewDatableItem() {
-      this.date = this.$dayjs().format();
+      let date = this.$dayjs().format();
       this.doc = Object.assign(this.editedItem, {
-        _id: this.date,
-        date: this.date
+        _id: date,
+        date
       });
       try {
         const response = await this.CREATE_NEW_DOC(this.doc);
+        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -175,11 +169,11 @@ export default {
     },
     close() {
       this.dialog = false;
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.indexOfItem = -1;
         this.editedItem = Object.assign({}, this.defaultItem);
-        this.$refs.form.reset();
-      });
+        this.$refs.form.resetValidation();
+      }, 300);
     }
   },
   watch: {
@@ -192,4 +186,3 @@ export default {
   }
 };
 </script>
-

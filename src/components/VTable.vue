@@ -10,7 +10,7 @@
   >
     <template slot="items" slot-scope="props">
       <v-hover>
-        <tr slot-scope="{ hover }">
+        <tr slot-scope="{ hover }" :class="{bg: props.selected}">
           <td>
             <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
           </td>
@@ -20,7 +20,7 @@
           <td>{{props.item.contactPhone}}</td>
           <td>{{props.item.phone}}</td>
           <td>{{props.item.imei}}</td>
-          <td>{{props.item.description}}</td>
+          <td class="table__data">{{props.item.description}}</td>
           <td>{{props.item.technician}}</td>
           <td>{{props.item.status}}</td>
           <td class="pa-0">
@@ -161,5 +161,8 @@ export default {
 }
 .table__actions {
   width: 36px;
+}
+.bg {
+  background-color: lightcyan !important;
 }
 </style>

@@ -13,19 +13,20 @@
         cache-items
         clearable
         hide-details
+        box
       ></v-autocomplete>
     </v-flex>
     <v-spacer></v-spacer>
     <v-flex xs3>
       <!-- Add [Esc] event to cancel search -->
       <v-autocomplete
-        :items="status"
+        :items="statusItems"
         :search-input.sync="filters.status"
-        item-text="status"
         label="Estatus"
         cache-items
         clearable
         hide-details
+        box
       ></v-autocomplete>
     </v-flex>
   </v-layout>
@@ -36,18 +37,14 @@ import { mapMutations } from "vuex";
 
 export default {
   data: () => ({
-    status: [
-      { status: "Listo para entregar", filterType: "status" },
-      { status: "Esperando repuesto", filterType: "status" },
-      { status: "En reparación", filterType: "status" },
-      { status: "Retirado", filterType: "status" },
-      { status: "Garantía", filterType: "status" }
+    statusItems: [
+      "Listo para entregar",
+      "Esperando repuesto",
+      "En reparación",
+      "Retirado",
+      "Garantía"
     ],
-    technicians: [
-      { name: "Miguel", filterType: "technician" },
-      { name: "Johan", filterType: "technician" },
-      { name: "Marcano", filterType: "technician" }
-    ],
+    technicians: [{ name: "Miguel" }, { name: "Johan" }, { name: "Marcano" }],
     filters: {
       technician: "",
       status: ""
