@@ -5,7 +5,8 @@ import {
     UPDATE_DATABLE_ITEM,
     SET_FILTER,
     SAVE_SELECTED_DATABLE_ITEM,
-    SET_STATE
+    SET_STATE,
+    IS_MINI
 } from '@/store/mutation-types'
 
 export default {
@@ -37,5 +38,8 @@ export default {
     },
     [SET_STATE](state, data) {
         state.dataTable.dataTableItems = data
+    },
+    [IS_MINI](state) {
+        state.mini = !state.mini
     }
 }
