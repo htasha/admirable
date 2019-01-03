@@ -14,7 +14,8 @@ export default {
                 status: ''
             },
             selectedDatableItem: []
-        }
+        },
+        mini: true
     },
     mutations,
     getters,
