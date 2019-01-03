@@ -7,9 +7,9 @@ import {
     ADD_NEW_DATABLE_ITEM,
     UPDATE_DATABLE_ITEM
 } from '@/store/mutation-types'
-import createNewDoc from '@/utils/models/create-new-doc'
-import fetchAllDocs from '@/utils/models/fetch-all-docs'
-import updateDoc from '@/utils/models/update-doc'
+import createNewDoc from '@/utils/client-models/create-new-doc'
+import fetchAllDocs from '@/utils/client-models/fetch-all-docs'
+import updateDoc from '@/utils/client-models/update-doc'
 
 export default {
     async [UPDATE_DOCUMENT](context, payload) {
