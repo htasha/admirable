@@ -1,9 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 offset-xs5>
-      <v-subheader class="px-0">Filtrar por:</v-subheader>
-    </v-flex>
-    <v-flex xs3 offset-xs5>
+  <v-layout justify-end>
+    <v-flex xs6 sm6 md6 lg4 align-self-center class="mr-3">
       <!-- Add [Esc] event to cancel search -->
       <v-autocomplete
         :items="technicians"
@@ -13,11 +10,9 @@
         cache-items
         clearable
         hide-details
-        box
       ></v-autocomplete>
     </v-flex>
-    <v-spacer></v-spacer>
-    <v-flex xs3>
+    <v-flex xs6 sm6 md6 lg4 align-self-center>
       <!-- Add [Esc] event to cancel search -->
       <v-autocomplete
         :items="statusItems"
@@ -26,7 +21,6 @@
         cache-items
         clearable
         hide-details
-        box
       ></v-autocomplete>
     </v-flex>
   </v-layout>

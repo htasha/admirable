@@ -1,7 +1,7 @@
 <template>
-  <v-dialog max-width="500" v-model="dialog" persistent>
-    <v-btn class="ma-0" slot="activator">
-      <v-icon left>mdi-plus</v-icon>añadir nuevo
+  <v-dialog max-width="500" v-model="dialog" persistent @keydown.esc="close">
+    <v-btn class="ma-0" slot="activator" flat>añadir nuevo
+      <v-icon right>mdi-plus</v-icon>
     </v-btn>
     <v-card>
       <v-card-title>
@@ -13,7 +13,7 @@
           :value="true"
           class="text-uppercase body-2 px-3 py-2"
           style="border-radius: 2px;"
-        >en reparacion</v-alert>
+        >{{editedItemStatus}}</v-alert>
       </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid">
@@ -23,35 +23,29 @@
                 <v-subheader class="pa-0 subheader_height--auto">Datos del cliente</v-subheader>
               </v-flex>
               <v-flex xs12>
-                <v-text-field
-                  v-model="editedItem.fullName"
-                  :rules="rules"
-                  label="Nombre completo"
-                  box
-                ></v-text-field>
+                <v-text-field v-model="editedItem.fullName" :rules="rules" label="Nombre completo"></v-text-field>
               </v-flex>
               <v-flex xs6>
                 <v-text-field
                   v-model="editedItem.idDoc"
                   :rules="rules"
                   label="Documento de identidad"
-                  box
                 ></v-text-field>
               </v-flex>
               <v-flex xs6>
-                <v-text-field v-model="editedItem.contactPhone" :rules="rules" label="Telefono" box></v-text-field>
+                <v-text-field v-model="editedItem.contactPhone" :rules="rules" label="Telefono"></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-subheader class="pa-0 subheader_height--auto" box>Datos del equipo</v-subheader>
+                <v-subheader class="pa-0 subheader_height--auto">Datos del equipo</v-subheader>
               </v-flex>
               <v-flex xs6>
-                <v-text-field v-model="editedItem.phone" :rules="rules" label="Equipo" box></v-text-field>
+                <v-text-field v-model="editedItem.phone" :rules="rules" label="Equipo"></v-text-field>
               </v-flex>
               <v-flex xs6>
-                <v-text-field v-model="editedItem.imei" :rules="rules" label="IMEI" box></v-text-field>
+                <v-text-field v-model="editedItem.imei" :rules="rules" label="IMEI"></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-textarea v-model="editedItem.description" :rules="rules" rows="1" box>
+                <v-textarea v-model="editedItem.description" :rules="rules" rows="1">
                   <div slot="label">
                     Reparación
                     <small>(descripción)</small>
@@ -62,7 +56,7 @@
                 <v-subheader class="pa-0 subheader_height--auto">Estatus del equipo</v-subheader>
               </v-flex>
               <v-flex xs6>
-                <v-select v-model="editedItem.status" :items="statusItems" label="Estatus" box></v-select>
+                <v-select v-model="editedItem.status" :items="statusItems" label="Estatus"></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -123,7 +117,10 @@ export default {
     itemToEdit: null
   }),
   computed: {
-    ...mapGetters("clients", ["getDataTableItems", "getDataTableItemToEdit"])
+    ...mapGetters("clients", ["getDataTableItems", "getDataTableItemToEdit"]),
+    editedItemStatus() {
+      return this.editedItem.status;
+    }
   },
   methods: {
     ...mapActions("clients", ["CREATE_NEW_DOC", "UPDATE_DOCUMENT"]),

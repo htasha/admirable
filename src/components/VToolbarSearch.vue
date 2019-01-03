@@ -1,5 +1,6 @@
 <template>
-  <v-toolbar app>
+  <v-toolbar app clipped-left>
+    <v-toolbar-side-icon @click="IS_MINI"></v-toolbar-side-icon>
     <v-toolbar-title>Admirable</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-text-field
@@ -20,7 +21,7 @@ import { mapMutations } from "vuex";
 
 export default {
   methods: {
-    ...mapMutations("clients", ["UPDATE_SEARCH"])
+    ...mapMutations("clients", ["UPDATE_SEARCH", "IS_MINI"])
   }
 };
 </script>
