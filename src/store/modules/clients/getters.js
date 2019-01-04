@@ -3,5 +3,6 @@ export default {
     getDataTableItemToEdit: state => state.dataTable.dataTableItemToEdit,
     getSearch: state => state.dataTable.search,
     getTechnician: state => state.dataTable.filters.technician || '',
-    getStatus: state => state.dataTable.filters.status || ''
+    getStatus: state => state.dataTable.filters.status || '',
+    dark: state => state.dark
 }
