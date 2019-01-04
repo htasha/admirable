@@ -125,6 +125,7 @@ export default {
   methods: {
     ...mapActions("clients", ["CREATE_NEW_DOC", "UPDATE_DOCUMENT"]),
     edit() {
+      this.clients = this.getDataTableItems;
       this.itemToEdit = this.getDataTableItemToEdit;
       this.indexOfItem = this.clients.indexOf(this.itemToEdit);
       this.editedItem = Object.assign({}, this.itemToEdit);
@@ -177,9 +178,6 @@ export default {
     dialog(val) {
       val || this.close();
     }
-  },
-  created() {
-    this.clients = this.getDataTableItems;
   }
 };
 </script>

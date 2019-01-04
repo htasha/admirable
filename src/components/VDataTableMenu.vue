@@ -16,7 +16,13 @@
       <v-subheader>Asignar técnico</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
-          <v-select v-model="menu.technician" :items="technicians" label="Técnico" hide-details></v-select>
+          <v-select
+            v-model="menu.technician"
+            :items="technicians"
+            item-text="name"
+            label="Técnico"
+            hide-details
+          ></v-select>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -29,7 +35,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
@@ -37,19 +43,14 @@ export default {
       technician: null,
       status: null
     },
-    technicians: ["Miguel", "Johan", "Marcano"],
-    statusItems: [
-      "Listo para entregar",
-      "Esperando repuesto",
-      "En reparación",
-      "Retirado",
-      "Garantía"
-    ]
+    technicians: [],
+    statusItems: []
   }),
   methods: {
     ...mapActions("clients", ["UPDATE_DOCUMENT"])
   },
   computed: {
+    ...mapGetters("technicians", ["getTechnicians", "getStatusItems"]),
     showOptions() {
       return this.$store.state.clients.dataTable.selectedDatableItem.length > 0;
     }
@@ -71,6 +72,10 @@ export default {
         console.log(error);
       }
     }
+  },
+  mounted() {
+    this.technicians = this.getTechnicians;
+    this.statusItems = this.getStatusItems;
   }
 };
 </script>

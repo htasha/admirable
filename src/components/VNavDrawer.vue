@@ -31,9 +31,6 @@ export default {
   }),
   computed: {
     ...mapState("clients", ["mini"])
-  },
-  mounted() {
-    this.$router.push("/clients");
   }
 };
 </script>

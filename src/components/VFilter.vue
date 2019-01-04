@@ -27,23 +27,20 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   data: () => ({
-    statusItems: [
-      "Listo para entregar",
-      "Esperando repuesto",
-      "En reparación",
-      "Retirado",
-      "Garantía"
-    ],
-    technicians: [{ name: "Miguel" }, { name: "Johan" }, { name: "Marcano" }],
+    statusItems: [],
+    technicians: [],
     filters: {
       technician: "",
       status: ""
     }
   }),
+  computed: {
+    ...mapGetters("technicians", ["getTechnicians", "getStatusItems"])
+  },
   methods: {
     ...mapMutations("clients", ["SET_FILTER", "CLEAR_FILTER"])
   },
@@ -54,6 +51,10 @@ export default {
     "filters.status": function(status) {
       this.SET_FILTER({ status });
     }
+  },
+  mounted() {
+    this.technicians = this.getTechnicians;
+    this.statusItems = this.getStatusItems;
   }
 };
 </script>
