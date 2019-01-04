@@ -6,7 +6,8 @@ import {
     SET_FILTER,
     SAVE_SELECTED_DATABLE_ITEM,
     SET_STATE,
-    IS_MINI
+    IS_MINI,
+    ENABLE_DARK
 } from '@/store/mutation-types'
 
 export default {
@@ -41,5 +42,8 @@ export default {
     },
     [IS_MINI](state) {
         state.mini = !state.mini
+    },
+    [ENABLE_DARK](state, val) {
+        state.dark = val
     }
 }
