@@ -8,10 +8,12 @@ import '@/assets/css/global.css'
 import MultiFilters from '@/plugins/multi-filters'
 import store from './store'
 import dayjs from 'dayjs'
+import randomColor from 'randomcolor'
 
 Vue.use(MultiFilters)
 Vue.config.productionTip = false
 Vue.prototype.$dayjs = dayjs
+Vue.prototype.$randomColor = randomColor
 
 new Vue({
   router,
