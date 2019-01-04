@@ -1,13 +1,12 @@
 import {
-    FETCH_ALL_DOCUMENTS
-} from '@/store/action-types';
+    ENABLE_DARK
+} from '@/store/mutation-types'
 
-export default async store => {
-    try {
-        let items = await store.dispatch('clients/' + FETCH_ALL_DOCUMENTS)
-        let mappedItems = items.rows.map(el => el.doc)
-        store.commit('clients/SET_STATE', mappedItems)
-    } catch (error) {
-        console.log(error)
-    }
+export default store => {
+    store.commit(`clients/${ENABLE_DARK}`, JSON.parse(localStorage.getItem('dark')))
+    store.subscribe(mutation => {
+        if (mutation.type === `clients/${ENABLE_DARK}`) {
+            localStorage.setItem('dark', mutation.payload)
+        }
+    })
 }
