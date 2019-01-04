@@ -15,7 +15,8 @@ export default {
             },
             selectedDatableItem: []
         },
-        mini: true
+        mini: true,
+        dark: false
     },
     mutations,
     getters,
