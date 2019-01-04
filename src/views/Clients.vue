@@ -21,6 +21,7 @@
             :search="filters"
             select-all
             item-key="_id"
+            :loading="loading"
           >
             <template slot="items" slot-scope="props">
               <v-hover>
@@ -53,7 +54,7 @@
               color="error"
               icon="mdi-alert"
             >Tu busqueda para "{{ search || filters.technician || filters.status }}" no fue encontrada.</v-alert>
-            <div slot="no-data" class="text-xs-center">Aun no has guardado ningun dato!</div>
+            <div slot="no-data" class="text-xs-center">Aun no tienes ningun registro agregado!</div>
           </v-data-table>
         </v-card>
       </v-flex>
@@ -65,7 +66,7 @@
 import VDialogForm from "@/components/VDialogForm.vue";
 import VDataTableMenu from "@/components/VDataTableMenu.vue";
 import VFilter from "@/components/VFilter.vue";
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import dayjs from "dayjs";
 
 export default {
@@ -92,7 +93,8 @@ export default {
       search: "",
       technician: "",
       status: ""
-    }
+    },
+    loading: true
   }),
   computed: {
     ...mapGetters("clients", {
@@ -105,8 +107,10 @@ export default {
   methods: {
     ...mapMutations("clients", [
       "SAVE_DATABLE_ITEM_TO_EDIT",
-      "SAVE_SELECTED_DATABLE_ITEM"
+      "SAVE_SELECTED_DATABLE_ITEM",
+      "SET_STATE"
     ]),
+    ...mapActions("clients", ["FETCH_ALL_DOCUMENTS"]),
     edit(item) {
       this.SAVE_DATABLE_ITEM_TO_EDIT(item);
       this.$refs.dialogForm.edit();
@@ -170,6 +174,15 @@ export default {
       this.filters = this.$MultiFilters.updateFilters(this.filters, {
         status: val
       });
+    }
+  },
+  async created() {
+    try {
+      let docs = await this.FETCH_ALL_DOCUMENTS();
+      this.SET_STATE(docs);
+      this.loading = false;
+    } catch (error) {
+      console.log(error);
     }
   }
 };
