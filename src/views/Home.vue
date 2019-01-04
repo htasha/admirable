@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app :dark="dark">
     <v-nav-drawer/>
     <v-toolbar-search/>
     <v-content>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 import VToolbarSearch from "@/components/VToolbarSearch.vue";
 import VNavDrawer from "@/components/VNavDrawer.vue";
 
@@ -21,6 +21,9 @@ export default {
   methods: {
     ...mapActions("technicians", ["GET_ALL_TECHNICIANS"]),
     ...mapMutations("technicians", ["LOAD_TECHNICIANS_STATE"])
+  },
+  computed: {
+    ...mapGetters("clients", ["dark"])
   },
   async created() {
     try {
