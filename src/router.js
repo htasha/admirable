@@ -22,13 +22,7 @@ export default new Router({
     component: Home,
     children: [{
         path: 'clients',
-        component: Clients,
-        beforeEnter: async (to, from, next) => {
-          let docs = await store.dispatch('clients/' + FETCH_ALL_DOCUMENTS)
-          let mappedItems = docs.rows.map(el => el.doc);
-          store.commit("clients/" + SET_STATE, mappedItems);
-          next()
-        }
+        component: Clients
       },
       {
         path: 'company',
