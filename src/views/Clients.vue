@@ -22,6 +22,9 @@
             select-all
             item-key="_id"
             :loading="loading"
+            rows-per-page-text="Filas por página"
+            :rows-per-page-items="rowsPerPageItems"
+            :value="value"
           >
             <template slot="items" slot-scope="props">
               <v-hover>
@@ -55,6 +58,10 @@
               icon="mdi-alert"
             >Tu busqueda para "{{ search || filters.technician || filters.status }}" no fue encontrada.</v-alert>
             <div slot="no-data" class="text-xs-center">Aun no tienes ningun registro agregado!</div>
+            <template
+              slot="pageText"
+              slot-scope="props"
+            >{{ props.pageStart }} - {{ props.pageStop }} de {{ props.itemsLength }}</template>
           </v-data-table>
         </v-card>
       </v-flex>
@@ -94,7 +101,9 @@ export default {
       technician: "",
       status: ""
     },
-    loading: true
+    loading: true,
+    rowsPerPageItems: [10, 15, { text: "Todas", value: -1 }],
+    value: []
   }),
   computed: {
     ...mapGetters("clients", {

@@ -4,12 +4,12 @@
       <v-flex justify-center layout>
         <v-card width="600">
           <v-list dense>
-            <v-list-tile avatar>
+            <v-list-tile>
               <v-list-tile-avatar>
-                <v-icon>mdi-brightness-2</v-icon>
+                <v-icon>mdi-power-sleep</v-icon>
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title class="subheading">Modo obscuro</v-list-tile-title>
+                <v-list-tile-title class="subheading">Modo oscuro</v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-switch v-model="mode"></v-switch>

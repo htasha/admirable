@@ -22,7 +22,18 @@
             item-text="name"
             label="Técnico"
             hide-details
-          ></v-select>
+          >
+            <v-list slot="no-data">
+              <v-list-tile avatar>
+                <v-list-tile-avatar>
+                  <v-icon>mdi-alert-outline</v-icon>
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>Sin técnicos para asignar</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-select>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>

@@ -1,7 +1,6 @@
 <template>
   <v-layout justify-end>
     <v-flex xs6 sm6 md6 lg4 align-self-center class="mr-3">
-      <!-- Add [Esc] event to cancel search -->
       <v-autocomplete
         :items="technicians"
         :search-input.sync="filters.technician"
@@ -10,10 +9,20 @@
         cache-items
         clearable
         hide-details
-      ></v-autocomplete>
+      >
+        <v-list slot="no-data">
+          <v-list-tile>
+            <v-list-tile-avatar>
+              <v-icon>mdi-alert-outline</v-icon>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>Sin técnicos para filtrar</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-autocomplete>
     </v-flex>
     <v-flex xs6 sm6 md6 lg4 align-self-center>
-      <!-- Add [Esc] event to cancel search -->
       <v-autocomplete
         :items="statusItems"
         :search-input.sync="filters.status"
@@ -55,6 +64,7 @@ export default {
   mounted() {
     this.technicians = this.getTechnicians;
     this.statusItems = this.getStatusItems;
+    console.log();
   }
 };
 </script>
