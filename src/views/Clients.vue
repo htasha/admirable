@@ -28,8 +28,12 @@
           >
             <template slot="items" slot-scope="props">
               <v-hover>
-                <tr slot-scope="{ hover }" :class="{bg: props.selected}">
-                  <td>
+                <tr
+                  slot-scope="{ hover }"
+                  :class="{'blue lighten-5': props.selected && !$vuetify.dark, 'theme--dark': $vuetify.dark}"
+                  :active="props.selected"
+                >
+                  <td class="table__td_border-l--solid" v-item-status="props.item.status">
                     <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
                   </td>
                   <td>{{props.item.date | formatDate}}</td>
@@ -38,7 +42,7 @@
                   <td>{{props.item.contactPhone}}</td>
                   <td>{{props.item.phone}}</td>
                   <td>{{props.item.imei}}</td>
-                  <td class="table__data">{{props.item.description}}</td>
+                  <td class="table__td">{{props.item.description}}</td>
                   <td>{{props.item.technician}}</td>
                   <td>{{props.item.status}}</td>
                   <td class="pa-0">
@@ -105,6 +109,27 @@ export default {
     rowsPerPageItems: [10, 15, { text: "Todas", value: -1 }],
     value: []
   }),
+  directives: {
+    "item-status": function(el, { value }) {
+      switch (value) {
+        case "Listo para entregar":
+          el.style.borderLeftColor = "#2196F3";
+          break;
+        case "Esperando repuesto":
+          el.style.borderLeftColor = "#424242";
+          break;
+        case "En reparación":
+          el.style.borderLeftColor = "#FFC107";
+          break;
+        case "Retirado":
+          el.style.borderLeftColor = "#4CAF50";
+          break;
+        case "Garantía":
+          el.style.borderLeftColor = "#FF5252";
+          break;
+      }
+    }
+  },
   computed: {
     ...mapGetters("clients", {
       dataTableItems: "getDataTableItems",
@@ -198,7 +223,7 @@ export default {
 </script>
 
 <style>
-.table__data {
+.table__td {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -207,7 +232,7 @@ export default {
 .table__actions {
   width: 36px;
 }
-.bg {
-  background-color: lightcyan !important;
+.table__td_border-l--solid {
+  border-left: 7px solid;
 }
 </style>
