@@ -7,6 +7,7 @@ export default async doc => {
         let result = await Technicians.put(Object.assign(doc, {
             _deleted: true
         }))
+        if (result.ok) return result
         return result
     } catch (error) {
         throw error
