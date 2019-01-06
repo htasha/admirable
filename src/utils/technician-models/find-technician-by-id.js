@@ -5,7 +5,7 @@ import {
 export default async docID => {
     try {
         let doc = await Technicians.get(docID)
-        return doc
+        if (doc._rev) return doc
     } catch (error) {
         throw error
     }
