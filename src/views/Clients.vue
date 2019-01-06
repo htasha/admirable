@@ -19,12 +19,12 @@
             :items="dataTableItems"
             :custom-filter="customFilter"
             :search="filters"
-            select-all
             item-key="_id"
             :loading="loading"
             rows-per-page-text="Filas por página"
             :rows-per-page-items="rowsPerPageItems"
             :value="value"
+            select-all
           >
             <template slot="items" slot-scope="props">
               <v-hover>

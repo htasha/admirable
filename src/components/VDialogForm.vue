@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   data: () => ({
@@ -124,6 +124,7 @@ export default {
   },
   methods: {
     ...mapActions("clients", ["CREATE_NEW_DOC", "UPDATE_DOCUMENT"]),
+    ...mapMutations("clients", ["ENABLE_SNACKBAR"]),
     edit() {
       this.clients = this.getDataTableItems;
       this.itemToEdit = this.getDataTableItemToEdit;
@@ -145,8 +146,10 @@ export default {
       try {
         let doc = { update: this.editedItem, oldDoc: this.itemToEdit };
         let response = await this.UPDATE_DOCUMENT(doc);
-        console.log(response);
-        if (response.updated) this.close();
+        if (response.updated) {
+          this.close();
+          this.ENABLE_SNACKBAR(response.message);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -159,11 +162,13 @@ export default {
       });
       try {
         const response = await this.CREATE_NEW_DOC(this.doc);
-        console.log(response);
+        if (response.created) {
+          this.close();
+          this.ENABLE_SNACKBAR(response.message);
+        }
       } catch (error) {
         console.log(error);
       }
-      this.close();
     },
     close() {
       this.dialog = false;

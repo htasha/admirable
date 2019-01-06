@@ -92,6 +92,7 @@ export default {
       "DELETE_TECHNICIAN"
     ]),
     ...mapMutations("technicians", ["REMOVE_TECHNICIAN"]),
+    ...mapMutations("clients", ["ENABLE_SNACKBAR"]),
     async create() {
       this.name = this.name.trim();
       if (this.name) {
@@ -107,9 +108,12 @@ export default {
             initials: longInitials.substring(0, 2),
             color: this.$randomColor({ luminosity: "dark" })
           };
-          let addedTechnician = await this.ADD_NEW_TECHNICIAN(technician);
-          this.technicians.push(addedTechnician);
-          this.name = "";
+          let response = await this.ADD_NEW_TECHNICIAN(technician);
+          if (response.created) {
+            this.technicians.push(response.doc);
+            this.name = "";
+            this.ENABLE_SNACKBAR("Técnico creado exitosamente");
+          }
         } catch (error) {
           console.log(error);
         }
@@ -118,7 +122,7 @@ export default {
     async remove(item) {
       this.item = item;
       try {
-        let result = await this.technicianExist();
+        let result = await this.TECHNICIAN_EXIST(this.item.name);
         if (result.found) {
           this.technician = result.name;
           this.count = result.count;
@@ -130,20 +134,12 @@ export default {
         console.log(error);
       }
     },
-    async technicianExist() {
-      try {
-        let result = await this.TECHNICIAN_EXIST(this.item.name);
-        return result;
-      } catch (error) {
-        console.log(error);
-      }
-    },
     async confirmDeletion() {
       try {
         let response = await this.DELETE_TECHNICIAN(this.item);
-        if (response.ok) this.REMOVE_TECHNICIAN(this.item);
+        this.REMOVE_TECHNICIAN(this.item);
         this.dialog = false;
-        console.log("Técnico eliminado exitosamente");
+        this.ENABLE_SNACKBAR("Técnico eliminado exitosamente");
       } catch (error) {
         console.log(error);
       }

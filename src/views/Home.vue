@@ -5,6 +5,7 @@
     <v-content>
       <router-view/>
     </v-content>
+    <v-snackbar v-model="snackbar" :timeout="3000" bottom>{{snackbarMessage}}</v-snackbar>
   </v-app>
 </template>
 
@@ -23,7 +24,7 @@ export default {
     ...mapMutations("technicians", ["LOAD_TECHNICIANS_STATE"])
   },
   computed: {
-    ...mapGetters("clients", ["dark"])
+    ...mapGetters("clients", ["dark", "snackbar", "snackbarMessage"])
   },
   async created() {
     try {

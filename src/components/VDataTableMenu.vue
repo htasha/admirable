@@ -3,16 +3,14 @@
     <v-btn class="ma-0" icon slot="activator">
       <v-icon>mdi-dots-vertical</v-icon>
     </v-btn>
-    <v-list two-line v-if="showOptions">
+    <v-list two-line v-if="selectedItems > 0">
       <v-subheader>Establecer estatus del equipo</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
           <v-select v-model="menu.status" :items="statusItems" label="Estatus" hide-details></v-select>
         </v-list-tile-content>
       </v-list-tile>
-
-      <v-divider></v-divider>
-
+      <v-divider/>
       <v-subheader>Asignar técnico</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
@@ -46,7 +44,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   data: () => ({
@@ -58,19 +56,23 @@ export default {
     statusItems: []
   }),
   methods: {
-    ...mapActions("clients", ["UPDATE_DOCUMENT"])
+    ...mapActions("clients", ["UPDATE_DOCUMENT"]),
+    ...mapMutations("clients", ["ENABLE_SNACKBAR"])
   },
   computed: {
-    ...mapGetters("technicians", ["getTechnicians", "getStatusItems"]),
-    showOptions() {
-      return this.$store.state.clients.dataTable.selectedDatableItem.length > 0;
-    }
+    ...mapGetters("clients", {
+      selectedItems: "getSelectedDatableItemLength"
+    }),
+    ...mapGetters("technicians", ["getTechnicians", "getStatusItems"])
   },
   watch: {
     "menu.technician": async function(technician) {
       try {
         let response = await this.UPDATE_DOCUMENT({ technician });
-        console.log(response);
+        if (response.updated)
+          this.ENABLE_SNACKBAR(
+            `${this.selectedItems} registro(s) actualizado(s) exitosamente`
+          );
       } catch (error) {
         console.log(error);
       }
@@ -78,7 +80,10 @@ export default {
     "menu.status": async function(status) {
       try {
         let response = await this.UPDATE_DOCUMENT({ status });
-        console.log(response);
+        if (response.updated)
+          this.ENABLE_SNACKBAR(
+            `${this.selectedItems} registro(s) actualizado(s) exitosamente`
+          );
       } catch (error) {
         console.log(error);
       }
