@@ -7,7 +7,8 @@ import {
     SAVE_SELECTED_DATABLE_ITEM,
     SET_STATE,
     IS_MINI,
-    ENABLE_DARK
+    ENABLE_DARK,
+    ENABLE_SNACKBAR
 } from '@/store/mutation-types'
 
 export default {
@@ -45,5 +46,12 @@ export default {
     },
     [ENABLE_DARK](state, val) {
         state.dark = val
+    },
+    [ENABLE_SNACKBAR](state, message) {
+        state.snackbar = true
+        state.snackbarMessage = message
+        setTimeout(() => {
+            state.snackbar = false
+        }, 3000);
     }
 }
