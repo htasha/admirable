@@ -19,7 +19,7 @@
           <v-list v-if="technicians.length > 0">
             <template v-for="(item, i) in technicians">
               <v-hover :key="i">
-                <v-list-tile avatar :key="i" @click slot-scope="{ hover }">
+                <v-list-tile avatar :key="i" @click.stop slot-scope="{ hover }">
                   <v-list-tile-avatar size="40">
                     <v-avatar :color="item.color" size="40">
                       <span class="white--text subheading">{{item.initials}}</span>
@@ -61,9 +61,9 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn flat @click="dialog = !dialog">cancelar</v-btn>
+          <v-btn flat :color="color" @click="dialog = !dialog">cancelar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn flat @click="confirmDeletion">eliminar</v-btn>
+          <v-btn flat :color="color" @click="confirmDeletion">eliminar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -83,7 +83,11 @@ export default {
     count: null
   }),
   computed: {
-    ...mapGetters("technicians", ["getTechnicians"])
+    ...mapGetters("technicians", ["getTechnicians"]),
+    ...mapGetters("clients", ["dark"]),
+    color() {
+      return this.dark ? "" : "primary";
+    }
   },
   methods: {
     ...mapActions("technicians", [
