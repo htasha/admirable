@@ -16,7 +16,9 @@ export default {
             selectedDatableItem: []
         },
         mini: true,
-        dark: false
+        dark: false,
+        snackbar: false,
+        snackbarMessage: ''
     },
     mutations,
     getters,
