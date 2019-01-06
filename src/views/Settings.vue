@@ -12,7 +12,7 @@
                 <v-list-tile-title class="subheading">Modo oscuro</v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-switch v-model="mode"></v-switch>
+                <v-switch v-model="mode" hide-details></v-switch>
               </v-list-tile-action>
             </v-list-tile>
           </v-list>
