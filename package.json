@@ -1,6 +1,9 @@
 {
-  "name": "electron-test",
+  "name": "admirable",
+  "author": "The admirable caveman",
   "version": "0.1.0",
+  "description": "Management system for cellular technical service companies",
+  "license": "GPL",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
