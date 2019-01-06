@@ -30,7 +30,7 @@ export default {
             }
             return {
                 updated: true,
-                message: 'Registro(s) actualizado(s) exitosamente'
+                message: 'Registro actualizado exitosamente'
             }
         } catch (error) {
             console.log(error)
