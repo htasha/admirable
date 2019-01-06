@@ -1,6 +1,6 @@
 <template>
   <v-dialog max-width="500" v-model="dialog" persistent @keydown.esc="close">
-    <v-btn class="ma-0" slot="activator" flat>añadir nuevo
+    <v-btn flat class="ma-0" slot="activator" :color="color">añadir nuevo
       <v-icon right>mdi-plus</v-icon>
     </v-btn>
     <v-card>
@@ -9,10 +9,11 @@
         <v-icon class="ml-2">mdi-{{ indexOfItem !== -1 ? 'pencil' : 'plus' }}</v-icon>
         <v-spacer></v-spacer>
         <v-alert
-          color="warning"
+          color="e"
           :value="true"
           class="text-uppercase body-2 px-3 py-2"
           style="border-radius: 2px;"
+          :class="statusColor"
         >{{editedItemStatus}}</v-alert>
       </v-card-title>
       <v-card-text>
@@ -62,11 +63,11 @@
           </v-container>
         </v-form>
       </v-card-text>
-
+      <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat color="blue" @click="close">descartar</v-btn>
-        <v-btn flat color="blue" @click="add">{{ indexOfItem !== -1 ? 'actualizar' : 'añadir' }}</v-btn>
+        <v-btn flat :color="color" @click="close">descartar</v-btn>
+        <v-btn flat :color="color" @click="add">{{ indexOfItem !== -1 ? 'actualizar' : 'añadir' }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -120,6 +121,18 @@ export default {
     ...mapGetters("clients", ["getDataTableItems", "getDataTableItemToEdit"]),
     editedItemStatus() {
       return this.editedItem.status;
+    },
+    statusColor() {
+      return {
+        info: this.editedItem.status === "Listo para entregar",
+        secondary: this.editedItem.status === "Esperando repuesto",
+        warning: this.editedItem.status === "En reparación",
+        success: this.editedItem.status === "Retirado",
+        error: this.editedItem.status === "Garantía"
+      };
+    },
+    color() {
+      return this.$vuetify.dark ? "" : "primary";
     }
   },
   methods: {
