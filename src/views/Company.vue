@@ -10,9 +10,11 @@
           <v-card-text class="pb-0">
             <v-text-field
               label="Nombre del técnico"
-              placeholder="p.ej. The Rock"
+              placeholder="p.ej. The Admirable Caveman"
               v-model="name"
               @keydown.enter="create"
+              persistent-hint
+              hint="Presiona enter para guardar"
             ></v-text-field>
           </v-card-text>
 
