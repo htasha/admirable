@@ -25,6 +25,7 @@ function createWindow() {
   win = new BrowserWindow({
     simpleFullscreen: true,
     show: false,
+    title: 'Admirable'
   })
 
   // Show browser window when is ready
