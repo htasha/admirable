@@ -1,15 +1,18 @@
 import {
     CREATE_NEW_DOC,
     FETCH_ALL_DOCUMENTS,
-    UPDATE_DOCUMENT
+    UPDATE_DOCUMENT,
+    DELETE_DOC
 } from '@/store/action-types';
 import {
     ADD_NEW_DATABLE_ITEM,
-    UPDATE_DATABLE_ITEM
+    UPDATE_DATABLE_ITEM,
+    REMOVE_ITEM_FROM_CLIENTS
 } from '@/store/mutation-types'
 import createNewDoc from '@/utils/client-models/create-new-doc'
 import fetchAllDocs from '@/utils/client-models/fetch-all-docs'
 import updateDoc from '@/utils/client-models/update-doc'
+import deleteDoc from '@/utils/client-models/delete-doc'
 
 export default {
     async [UPDATE_DOCUMENT](context, payload) {
@@ -56,6 +59,14 @@ export default {
             }
         } catch (error) {
             throw error
+        }
+    },
+    async [DELETE_DOC](context, doc) {
+        try {
+            await deleteDoc(doc)
+            context.commit(REMOVE_ITEM_FROM_CLIENTS, doc)
+        } catch (error) {
+            console.log(error)
         }
     }
 }
