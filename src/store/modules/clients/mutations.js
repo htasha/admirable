@@ -8,7 +8,8 @@ import {
     SET_STATE,
     IS_MINI,
     ENABLE_DARK,
-    ENABLE_SNACKBAR
+    ENABLE_SNACKBAR,
+    REMOVE_ITEM_FROM_CLIENTS
 } from '@/store/mutation-types'
 
 export default {
@@ -53,5 +54,12 @@ export default {
         setTimeout(() => {
             state.snackbar = false
         }, 3000);
+    },
+    [REMOVE_ITEM_FROM_CLIENTS](state, item) {
+        let clients = state.dataTable.dataTableItems
+        item.forEach(el => {
+            let atIndex = clients.indexOf(el)
+            clients.splice(atIndex, 1)
+        })
     }
 }
