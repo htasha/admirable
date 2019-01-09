@@ -5,7 +5,10 @@
         <v-card>
           <v-layout class="pa-3">
             <v-flex xs6 align-self-center>
-              <v-data-table-menu class="mr-2"/>
+              <v-data-table-menu/>
+              <v-btn icon :disabled="!selected.length > 0" @click="deleteItem">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
               <v-dialog-form ref="dialogForm"/>
             </v-flex>
             <v-flex xs6>
@@ -23,37 +26,28 @@
             :loading="loading"
             rows-per-page-text="Filas por página"
             :rows-per-page-items="rowsPerPageItems"
-            :value="value"
             select-all
           >
             <template slot="items" slot-scope="props">
-              <v-hover>
-                <tr
-                  slot-scope="{ hover }"
-                  :class="{'blue lighten-5': props.selected && !$vuetify.dark, 'theme--dark': $vuetify.dark}"
-                  :active="props.selected"
-                >
-                  <td class="table__td_border-l--solid" v-item-status="props.item.status">
-                    <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
-                  </td>
-                  <td>{{props.item.date | formatDate}}</td>
-                  <td>{{props.item.fullName}}</td>
-                  <td>{{props.item.idDoc}}</td>
-                  <td>{{props.item.contactPhone}}</td>
-                  <td>{{props.item.phone}}</td>
-                  <td>{{props.item.imei}}</td>
-                  <td class="table__td">{{props.item.description}}</td>
-                  <td>{{props.item.technician}}</td>
-                  <td>{{props.item.status}}</td>
-                  <td class="pa-0">
-                    <div class="table__actions">
-                      <v-btn icon v-show="hover" @click="edit(props.item)" class="ma-0">
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                    </div>
-                  </td>
-                </tr>
-              </v-hover>
+              <tr
+                :class="{'blue lighten-5': props.selected && !$vuetify.dark, 'theme--dark': $vuetify.dark}"
+                style="cursor: pointer"
+                :active="props.selected"
+              >
+                <td style="position: relative">
+                  <div class="table__td_border-l--solid" v-item-status="props.item.status"></div>
+                  <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+                </td>
+                <td @click="edit(props.item)">{{props.item.date | formatDate}}</td>
+                <td @click="edit(props.item)">{{props.item.fullName}}</td>
+                <td @click="edit(props.item)">{{props.item.idDoc}}</td>
+                <td @click="edit(props.item)">{{props.item.contactPhone}}</td>
+                <td @click="edit(props.item)">{{props.item.phone}}</td>
+                <td @click="edit(props.item)">{{props.item.imei}}</td>
+                <td class="table__td" @click="edit(props.item)">{{props.item.description}}</td>
+                <td @click="edit(props.item)">{{props.item.technician}}</td>
+                <td @click="edit(props.item)">{{props.item.status}}</td>
+              </tr>
             </template>
             <v-alert
               slot="no-results"
@@ -97,8 +91,7 @@ export default {
       { text: "IMEI", value: "imei", sortable: false },
       { text: "Descripción", value: "description", sortable: false },
       { text: "Técnico", value: "technician", sortable: false },
-      { text: "Estatus", value: "status", sortable: false },
-      { text: "", value: "actions", sortable: false }
+      { text: "Estatus", value: "status", sortable: false }
     ],
     filters: {
       search: "",
@@ -106,8 +99,7 @@ export default {
       status: ""
     },
     loading: true,
-    rowsPerPageItems: [10, 15, { text: "Todas", value: -1 }],
-    value: []
+    rowsPerPageItems: [10, 15, { text: "Todas", value: -1 }]
   }),
   directives: {
     "item-status": function(el, { value }) {
@@ -142,12 +134,24 @@ export default {
     ...mapMutations("clients", [
       "SAVE_DATABLE_ITEM_TO_EDIT",
       "SAVE_SELECTED_DATABLE_ITEM",
-      "SET_STATE"
+      "SET_STATE",
+      "ENABLE_SNACKBAR"
     ]),
-    ...mapActions("clients", ["FETCH_ALL_DOCUMENTS"]),
+    ...mapActions("clients", ["FETCH_ALL_DOCUMENTS", "DELETE_DOC"]),
     edit(item) {
       this.SAVE_DATABLE_ITEM_TO_EDIT(item);
       this.$refs.dialogForm.edit();
+    },
+    async deleteItem() {
+      try {
+        await this.DELETE_DOC(this.selected);
+        this.ENABLE_SNACKBAR(
+          `${this.selected.length} registro(s) eliminado(s) exitosamente`
+        );
+        this.selected = [];
+      } catch (error) {
+        console.log(error);
+      }
     },
     customFilter(items, search, filter, headers) {
       const cf = new this.$MultiFilters(items, search, filter, headers);
@@ -233,6 +237,11 @@ export default {
   width: 36px;
 }
 .table__td_border-l--solid {
-  border-left: 7px solid;
+  position: absolute;
+  border-left: 4px solid;
+  width: 4px;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 </style>
