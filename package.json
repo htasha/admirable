@@ -1,10 +1,14 @@
 {
-  "name": "Admirable",
+  "name": "admirable",
   "author": "The Admirable Caveman",
   "version": "0.1.0",
   "description": "Management system for cellular technical service companies",
   "license": "GPL",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/htasha/admirable.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -16,7 +20,6 @@
   "dependencies": {
     "@mdi/font": "^2.6.95",
     "dayjs": "^1.7.8",
-    "electron-updater": "^4.0.6",
     "pouchdb": "^7.0.0",
     "pouchdb-find": "^7.0.0",
     "randomcolor": "^0.5.3",
