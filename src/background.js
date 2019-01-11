@@ -9,10 +9,6 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
-import {
-  autoUpdater
-} from 'electron-updater'
-
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -28,7 +24,6 @@ protocol.registerStandardSchemes(['app'], {
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    simpleFullscreen: true,
     show: false,
     title: 'Admirable'
   })
