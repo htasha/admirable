@@ -1,4 +1,4 @@
-# electron-test
+# Admirable
 
 ## Project setup
 ```
