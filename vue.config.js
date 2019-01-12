@@ -2,7 +2,7 @@ module.exports = {
     pluginOptions: {
         electronBuilder: {
             builderOptions: {
-                appId: 'org.admirable.admirable-electron',
+                appId: 'com.admirable.Admirable',
                 productName: 'Admirable',
                 artifactName: '${productName}-v${version}.${ext}'
             }
