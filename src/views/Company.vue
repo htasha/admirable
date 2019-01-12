@@ -17,7 +17,6 @@
               hint="Presiona enter para guardar"
             ></v-text-field>
           </v-card-text>
-
           <v-list v-if="technicians.length > 0">
             <template v-for="(item, i) in technicians">
               <v-hover :key="i">
@@ -39,7 +38,6 @@
               </v-hover>
             </template>
           </v-list>
-
           <v-card-text v-else>
             <div class="body-1 font-italic">Aun no tienes técnicos para mostrar, agrega uno nuevo.</div>
           </v-card-text>
@@ -53,13 +51,13 @@
           <h5 class="headline">Seguro que quieres eliminar a este técnico?</h5>
         </v-card-title>
         <v-card-text class="body-1">
-          <strong>{{technician}}</strong> tiene asociado(s)
-          <strong>{{count}}</strong> equipo(s), si lo eliminas ya no podras filtrar por este nombre en la tabla de clientes.
-          <br>
-          <br>
-          <div
-            class="caption font-italic"
-          >Nota: Puedes agregarlo nuevamente si necesitas saber a que técnico pertenece un equipo.</div>
+          <p>
+            <strong>{{technician}}</strong> tiene asociado(s)
+            <strong>{{count}}</strong> equipo(s), si lo eliminas ya no podras filtrar por este nombre en la tabla de clientes.
+          </p>
+          <p
+            class="caption font-italic mb-0"
+          >Nota: Puedes agregarlo nuevamente si necesitas saber a que técnico pertenece un equipo.</p>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
