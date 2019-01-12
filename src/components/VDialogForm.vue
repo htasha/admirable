@@ -57,7 +57,7 @@
                 <v-subheader class="pa-0 subheader_height--auto">Estatus del equipo</v-subheader>
               </v-flex>
               <v-flex xs6>
-                <v-select v-model="editedItem.status" :items="statusItems" label="Estatus"></v-select>
+                <v-select v-model="editedItem.status" :items="getStatusItems" label="Estatus"></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -104,13 +104,6 @@ export default {
       status: "En reparación"
     },
     dialog: false,
-    statusItems: [
-      "Listo para entregar",
-      "Esperando repuesto",
-      "En reparación",
-      "Retirado",
-      "Garantía"
-    ],
     rules: [v => !!v || "Campo requerido"],
     indexOfItem: -1,
     clients: null,
@@ -119,6 +112,7 @@ export default {
   }),
   computed: {
     ...mapGetters("clients", ["getDataTableItems", "getDataTableItemToEdit"]),
+    ...mapGetters("technicians", ["getStatusItems"]),
     editedItemStatus() {
       return this.editedItem.status;
     },
