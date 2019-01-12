@@ -16,14 +16,17 @@
             </v-flex>
           </v-layout>
           <v-divider/>
+          <v-card-text v-if="loading" class="text-xs-center">
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          </v-card-text>
           <v-data-table
+            v-else
             v-model="selected"
             :headers="headers"
-            :items="dataTableItems"
+            :items="items"
             :custom-filter="customFilter"
             :search="filters"
             item-key="_id"
-            :loading="loading"
             rows-per-page-text="Filas por página"
             :rows-per-page-items="rowsPerPageItems"
             select-all
@@ -76,6 +79,7 @@ import dayjs from "dayjs";
 
 export default {
   components: {
+    // Todo: Load componenets dinamically
     VDialogForm,
     VDataTableMenu,
     VFilter
@@ -93,6 +97,7 @@ export default {
       { text: "Técnico", value: "technician", sortable: false },
       { text: "Estatus", value: "status", sortable: false }
     ],
+    items: [],
     filters: {
       search: "",
       technician: "",
@@ -216,8 +221,8 @@ export default {
   },
   async created() {
     try {
-      let docs = await this.FETCH_ALL_DOCUMENTS();
-      this.SET_STATE(docs);
+      this.items = await this.FETCH_ALL_DOCUMENTS();
+      this.SET_STATE(this.items);
       this.loading = false;
     } catch (error) {
       console.log(error);
