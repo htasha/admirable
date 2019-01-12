@@ -7,7 +7,7 @@
       <v-subheader>Establecer estatus del equipo</v-subheader>
       <v-list-tile>
         <v-list-tile-content>
-          <v-select v-model="menu.status" :items="statusItems" label="Estatus" hide-details></v-select>
+          <v-select v-model="menu.status" :items="getStatusItems" label="Estatus" hide-details></v-select>
         </v-list-tile-content>
       </v-list-tile>
       <v-divider/>
@@ -16,7 +16,7 @@
         <v-list-tile-content>
           <v-select
             v-model="menu.technician"
-            :items="technicians"
+            :items="getTechnicians"
             item-text="name"
             label="Técnico"
             hide-details
@@ -88,10 +88,6 @@ export default {
         console.log(error);
       }
     }
-  },
-  mounted() {
-    this.technicians = this.getTechnicians;
-    this.statusItems = this.getStatusItems;
   }
 };
 </script>
