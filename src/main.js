@@ -19,9 +19,5 @@ Vue.prototype.$randomColor = randomColor
 new Vue({
   router,
   store,
-  render: h => h(App),
-  mounted() {
-    // Prevent blank screen in Electron builds
-    this.$router.push('/')
-  }
+  render: h => h(App)
 }).$mount('#app')
