@@ -36,22 +36,26 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
-  data: () => ({
-    statusItems: [],
-    technicians: [],
-    filters: {
-      technician: "",
-      status: ""
-    }
-  }),
+  data() {
+    return {
+      statusItems: [],
+      technicians: [],
+      filters: {
+        technician: "",
+        status: ""
+      }
+    };
+  },
   computed: {
     ...mapGetters("technicians", ["getTechnicians", "getStatusItems"])
   },
   methods: {
-    ...mapMutations("clients", ["SET_FILTER", "CLEAR_FILTER"])
+    ...mapMutations("clients", ["SET_FILTER", "CLEAR_FILTER"]),
+    ...mapMutations("technicians", ["LOAD_TECHNICIANS_STATE"]),
+    ...mapActions("technicians", ["GET_ALL_TECHNICIANS"])
   },
   watch: {
     "filters.technician": function(technician) {
@@ -61,10 +65,14 @@ export default {
       this.SET_FILTER({ status });
     }
   },
-  mounted() {
-    this.technicians = this.getTechnicians;
+  async created() {
     this.statusItems = this.getStatusItems;
-    console.log();
+    try {
+      this.technicians = await this.GET_ALL_TECHNICIANS();
+      this.LOAD_TECHNICIANS_STATE(this.technicians);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 </script>
