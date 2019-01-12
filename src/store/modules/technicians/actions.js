@@ -32,8 +32,7 @@ export default {
     },
     async [GET_ALL_TECHNICIANS](context) {
         try {
-            let docs = await fetchAllDocuments()
-            if (docs.length > 0) return docs
+            return await fetchAllDocuments()
         } catch (error) {
             throw error
         }
