@@ -1,7 +1,7 @@
 {
   "name": "admirable",
   "author": "The Admirable Caveman",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Management system for cellular technical service companies",
   "license": "GPL",
   "private": true,
@@ -37,7 +37,7 @@
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
-    "electron": "^2.0.0",
+    "electron": "^3.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-cli-plugin-electron-builder": "^1.0.0-rc.9",
