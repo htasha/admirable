@@ -1,7 +1,7 @@
 {
   "name": "admirable",
   "author": "The Admirable Caveman",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Management system for cellular technical service companies",
   "license": "GPL",
   "private": true,
@@ -12,7 +12,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "electron:build": "vue-cli-service electron:build --x64 --ia32",
+    "electron:build": "vue-cli-service electron:build --x64 -p always",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "test:unit": "vue-cli-service test:unit"
