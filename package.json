@@ -20,6 +20,7 @@
   "dependencies": {
     "@mdi/font": "^2.6.95",
     "dayjs": "^1.7.8",
+    "electron-updater": "^4.0.6",
     "pouchdb": "^7.0.0",
     "pouchdb-find": "^7.0.0",
     "randomcolor": "^0.5.3",
