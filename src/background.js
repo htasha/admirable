@@ -9,7 +9,9 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
-
+import {
+  autoUpdater
+} from "electron-updater"
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -34,7 +36,7 @@ function createWindow() {
     win.show()
   })
 
-  if (isDevelopment || process.env.IS_TEST) {
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
@@ -75,6 +77,7 @@ app.on('ready', async () => {
     await installVueDevtools()
   }
   createWindow()
+  autoUpdater.checkForUpdatesAndNotify()
 })
 
 // Exit cleanly on request from parent process in development mode.
