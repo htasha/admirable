@@ -9,6 +9,15 @@ module.exports = {
                     provider: 'github',
                     owner: 'htasha',
                     private: false
+                },
+                win: {
+                    target: [{
+                        target: "nsis",
+                        arch: [
+                            "x64",
+                            "ia32"
+                        ]
+                    }]
                 }
             }
         }
