@@ -4,7 +4,12 @@ module.exports = {
             builderOptions: {
                 appId: 'com.admirable.Admirable',
                 productName: 'Admirable',
-                artifactName: '${productName}-v${version}.${ext}'
+                artifactName: '${productName}-v${version}.${ext}',
+                publish: {
+                    provider: 'github',
+                    owner: 'htasha',
+                    private: false
+                }
             }
         }
     }
