@@ -1,5 +1,8 @@
 # Admirable
 
+Download the desktop app for Window [here](https://admirable.now.sh/).
+
+
 ## Project setup
 ```
 npm install
